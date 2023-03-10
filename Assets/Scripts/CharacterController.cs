@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CharacterController : MonoBehaviour
@@ -15,7 +13,7 @@ public class CharacterController : MonoBehaviour
     bool _lastLeftMouse;
     Vector3 _velocity = Vector3.zero;
 
-    float _timeSlowMultiplier = 1f/8f;
+    float _timeScale = 1f/8f;
 
     // Start is called before the first frame update
     void Start()
@@ -47,10 +45,10 @@ public class CharacterController : MonoBehaviour
 
         if (currentLeftMouse)
         {
-            _timeSlowMultiplier = 1 / 8f;
+            _timeScale = 1 / 8f;
         } else
         {
-            _timeSlowMultiplier = 1;
+            _timeScale = 1;
         }
 
         _lastLeftMouse = currentLeftMouse;
@@ -111,7 +109,7 @@ public class CharacterController : MonoBehaviour
 
     void MoveWithVelocity()
     {
-        transform.position += _velocity * Time.deltaTime * _timeSlowMultiplier;
+        transform.Translate(_velocity * Time.deltaTime * _timeScale);
     }
 
     Vector3 RoundToInt(Vector3 v3)
