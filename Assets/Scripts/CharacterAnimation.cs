@@ -1,15 +1,15 @@
-﻿using System.Collections;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class CharacterAnimation : MonoBehaviour
 {
-    public AnimationClip _brellaOpen;
-
+    private Animator _animController;
 
     // Use this for initialization
     void Start()
     {
-
+        _animController = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -17,12 +17,14 @@ public class CharacterAnimation : MonoBehaviour
     {
         if (Input.GetMouseButtonUp(0))
         {
-            // play animation ONCE
+            _animController.SetTrigger("Open");
         }
 
         if (Input.GetMouseButtonDown(0))
         {
-            // set to frame 0 and stop playing animations
+            _animController.SetTrigger("Close");
         }
     }
+
+
 }

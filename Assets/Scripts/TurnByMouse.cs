@@ -6,7 +6,7 @@ namespace Assets.Scripts
     public class TurnByMouse : MonoBehaviour
     {
         Quaternion INITIAL_ROTATION = Quaternion.Euler(Vector3.forward * 90);
-        float TURN_SPEED = 0.2f;
+        float TURN_SPEED = 10f;
 
         float _lastAngle = 0;
         float _currentAngle = 0;
@@ -45,7 +45,7 @@ namespace Assets.Scripts
 
             if (_isTurning)
             {
-                float turnAlpha = (Time.time - _lastTurnedTime) / TURN_SPEED;
+                float turnAlpha = (Time.time - _lastTurnedTime) * TURN_SPEED;
                 _realCharacterAngle = Mathf.LerpAngle(_realCharacterAngleWhenTurned, _currentAngle, Mathf.Min(1, turnAlpha));
 
                 transform.rotation = _camera.transform.rotation * Quaternion.Euler(Vector3.forward * _realCharacterAngle) * INITIAL_ROTATION;
