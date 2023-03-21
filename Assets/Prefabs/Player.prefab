@@ -11,6 +11,9 @@ GameObject:
   - component: {fileID: 1202654230}
   - component: {fileID: 7278591255513898846}
   - component: {fileID: 8629223683436107844}
+  - component: {fileID: 1202654234}
+  - component: {fileID: 1202654232}
+  - component: {fileID: 4617869189360736365}
   m_Layer: 2
   m_Name: Quad
   m_TagString: Untagged
@@ -25,7 +28,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1202654229}
-  m_LocalRotation: {x: 0.7071071, y: -0, z: -0, w: 0.70710653}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -97,6 +100,51 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d34705d40b86de4ca49b8614f856bd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!95 &1202654234
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1202654229}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 50ddb2f74e749f24492114dfdabc24a0, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &1202654232
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1202654229}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d34705d40b86de4ca49b8614f856bd0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4617869189360736365
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1202654229}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0de4d8e412c9b5d4ea998e7b164be32c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _brellaOpen: {fileID: 7400000, guid: 0914a8e6647d1fe44a1f05ababa84e15, type: 2}
 --- !u!1 &838430880132845645
 GameObject:
   m_ObjectHideFlags: 0
