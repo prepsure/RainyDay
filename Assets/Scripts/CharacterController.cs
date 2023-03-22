@@ -7,6 +7,8 @@ public class CharacterController : MonoBehaviour
     const int PUSH_OFF_MASK = 1 << 6;
 
     event Action OnMouseUp;
+    event Action OnRightMouseButtonDown;
+    event Action OnRightMouseUp;
 
     Camera _camera;
 
@@ -30,28 +32,49 @@ public class CharacterController : MonoBehaviour
                 BlastInDirection(-vel);
             }
         };
+
+        OnRightMouseButtonDown += () =>
+        {
+            // check if near pole
+            // snap to pole
+            // make rotate
+        };
+
+        OnRightMouseUp += () =>
+        {
+            // wait until the character is roughly in the right place
+
+            // snap position to a grid space
+            // snap velocity to an orthogonal direction
+        };
     }
 
     // Update is called once per frame
     void Update()
     {
-        // mouse events
-        bool currentLeftMouse = Input.GetMouseButton(0);
-
-        if (!currentLeftMouse && _lastLeftMouse)
+        if (Input.GetMouseButtonUp(0))
         {
             OnMouseUp();
         }
 
-        if (currentLeftMouse)
+        if (Input.GetMouseButtonUp(1))
+        {
+            OnRightMouseUp();
+        }
+
+        if (Input.GetMouseButtonUp(1))
+        {
+            OnRightMouseUp();
+        }
+
+        if (Input.GetMouseButton(0))
         {
             _timeScale = 1 / 8f;
-        } else
+        }
+        else
         {
             _timeScale = 1;
         }
-
-        _lastLeftMouse = currentLeftMouse;
 
         // velocity updates
         if (VelocityHittingWall(_velocity)) {
@@ -115,5 +138,20 @@ public class CharacterController : MonoBehaviour
     Vector3 RoundToInt(Vector3 v3)
     {
         return new Vector3(Mathf.Round(v3.x), Mathf.Round(v3.y), Mathf.Round(v3.z));
+    }
+
+    bool IsNearPole(Vector3 v3)
+    {
+        foreach (GameObject pole in GameObject.FindGameObjectsWithTag("SwingPole"))
+        {
+            Vector3 polePos = pole.GetComponent<Transform>().position;
+
+            if ((v3 - polePos).magnitude < 0)
+            {
+
+            }
+        }
+
+        return false;
     }
 }
