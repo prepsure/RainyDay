@@ -4,6 +4,7 @@ using UnityEngine;
 public class CharacterController : MonoBehaviour
 {
     const float SPEED = 8f;
+    const float POLE_GRAB_DISTANCE = 
     const int PUSH_OFF_MASK = 1 << 6;
 
     event Action OnMouseUp;
@@ -146,7 +147,7 @@ public class CharacterController : MonoBehaviour
         {
             Vector3 polePos = pole.GetComponent<Transform>().position;
 
-            if ((v3 - polePos).magnitude < 0)
+            if ((v3 - polePos).magnitude < POLE_GRAB_DISTANCE)
             {
 
             }
