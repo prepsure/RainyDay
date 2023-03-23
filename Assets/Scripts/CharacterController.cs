@@ -4,9 +4,13 @@ using UnityEngine;
 public class CharacterController : MonoBehaviour
 {
     const float SPEED = 8f;
-    const float POLE_GRAB_DISTANCE = 5f;
+    const float SWING_SPEED = 2 / 3f * SPEED;
+
     const int PUSH_OFF_MASK = 1 << 6;
     const float TIME_SLOW_MULTIPLIER = 1f / 6f;
+
+    const float SWING_RADIUS = 0.5f;
+    const float POLE_GRAB_DISTANCE = 0.55f;
 
     event Action OnLeftMouseUp;
     event Action OnRightMouseUp;
@@ -62,10 +66,10 @@ public class CharacterController : MonoBehaviour
         // look for pole to grab
         if (Input.GetMouseButton(1))
         {
-            if (NearPole(transform.position, out _poleAttachedTo))
+            if (NearPole(transform.position, out var pole))
             {
                 // only lock to pole if near the position where their velocity is pointing
-
+                _poleAttachedTo = pole;
                 _attachedToPole = true;
             }
         }
@@ -88,8 +92,6 @@ public class CharacterController : MonoBehaviour
 
     void UpdateVelocity()
     {
-        Debug.Log($"{transform.position}");
-
         if (_attachedToPole)
         {
             RotateAround(transform.position, _poleAttachedTo.transform.position, 1, Time.deltaTime);
@@ -179,13 +181,14 @@ public class CharacterController : MonoBehaviour
 
     void RotateAround(Vector3 characterPos, Vector3 polePos, float rotationDirection, float dt)
     {
-        Vector3 radiusVector_i = Vector3.Scale(characterPos - polePos, new Vector3(1, 0, 1));
+        Vector3 radiusVector_i = Vector3.Scale(Vector3.Normalize(characterPos - polePos), new Vector3(1, 0, 1));
         float angle_i = VectorToAngle(radiusVector_i);
-        float dtheta = dt * radiusVector_i.magnitude * SPEED;
+        float dtheta = dt * SWING_SPEED * rotationDirection / SWING_RADIUS * _timeScale;
         float angle_f = angle_i + dtheta;
-        Vector3 radiusVector_f = AngleToVector(angle_f);
+        Vector3 radiusVector_f = AngleToVector(angle_f) * SWING_RADIUS;
 
         transform.Translate(radiusVector_f + polePos - characterPos);
+        _velocity = SnapToOrthogonal(Vector3.Cross(radiusVector_f, Vector3.up * rotationDirection)) * SPEED;
     }
 
     Vector3 AngleToVector(float a)
