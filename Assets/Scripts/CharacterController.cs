@@ -4,26 +4,26 @@ using UnityEngine;
 public class CharacterController : MonoBehaviour
 {
     const float SPEED = 8f;
-    const float POLE_GRAB_DISTANCE = 
+    const float POLE_GRAB_DISTANCE = 5f;
     const int PUSH_OFF_MASK = 1 << 6;
+    const float TIME_SLOW_MULTIPLIER = 1f / 6f;
 
-    event Action OnMouseUp;
-    event Action OnRightMouseButtonDown;
+    event Action OnLeftMouseUp;
     event Action OnRightMouseUp;
 
     Camera _camera;
-
-    bool _lastLeftMouse;
+    GameObject _poleAttachedTo;
+    
     Vector3 _velocity = Vector3.zero;
-
-    float _timeScale = 1f/8f;
+    bool _attachedToPole = false;
+    float _timeScale = 1;
 
     // Start is called before the first frame update
     void Start()
     {
         _camera = FindObjectOfType<Camera>();
 
-        OnMouseUp += () =>
+        OnLeftMouseUp += () =>
         {
             Vector3 vel = SnapToOrthogonal(GetDirectionOfMouseRelativeToCharacter(Input.mousePosition));
 
@@ -34,28 +34,24 @@ public class CharacterController : MonoBehaviour
             }
         };
 
-        OnRightMouseButtonDown += () =>
-        {
-            // check if near pole
-            // snap to pole
-            // make rotate
-        };
-
         OnRightMouseUp += () =>
         {
             // wait until the character is roughly in the right place
 
             // snap position to a grid space
             // snap velocity to an orthogonal direction
+
+            _attachedToPole = false;
         };
     }
 
     // Update is called once per frame
     void Update()
     {
+        // mouse events
         if (Input.GetMouseButtonUp(0))
         {
-            OnMouseUp();
+            OnLeftMouseUp();
         }
 
         if (Input.GetMouseButtonUp(1))
@@ -63,24 +59,45 @@ public class CharacterController : MonoBehaviour
             OnRightMouseUp();
         }
 
-        if (Input.GetMouseButtonUp(1))
+        // look for pole to grab
+        if (Input.GetMouseButton(1))
         {
-            OnRightMouseUp();
+            if (NearPole(transform.position, out _poleAttachedTo))
+            {
+                // only lock to pole if near the position where their velocity is pointing
+
+                _attachedToPole = true;
+            }
         }
 
+        SetTimeScale();
+        UpdateVelocity();
+    }
+
+    void SetTimeScale()
+    {
         if (Input.GetMouseButton(0))
         {
-            _timeScale = 1 / 8f;
+            _timeScale = TIME_SLOW_MULTIPLIER;
         }
         else
         {
             _timeScale = 1;
         }
+    }
 
-        // velocity updates
-        if (VelocityHittingWall(_velocity)) {
+    void UpdateVelocity()
+    {
+        Debug.Log($"{transform.position}");
+
+        if (_attachedToPole)
+        {
+            RotateAround(transform.position, _poleAttachedTo.transform.position, 1, Time.deltaTime);
+        } else if (VelocityHittingWall(_velocity))
+        {
             Hault();
-        } else
+        }
+        else
         {
             MoveWithVelocity();
         }
@@ -141,7 +158,7 @@ public class CharacterController : MonoBehaviour
         return new Vector3(Mathf.Round(v3.x), Mathf.Round(v3.y), Mathf.Round(v3.z));
     }
 
-    bool IsNearPole(Vector3 v3)
+    bool NearPole(Vector3 v3, out GameObject p)
     {
         foreach (GameObject pole in GameObject.FindGameObjectsWithTag("SwingPole"))
         {
@@ -149,10 +166,35 @@ public class CharacterController : MonoBehaviour
 
             if ((v3 - polePos).magnitude < POLE_GRAB_DISTANCE)
             {
+                p = pole;
 
+                return true;
             }
         }
 
+        p = null;
+
         return false;
+    }
+
+    void RotateAround(Vector3 characterPos, Vector3 polePos, float rotationDirection, float dt)
+    {
+        Vector3 radiusVector_i = Vector3.Scale(characterPos - polePos, new Vector3(1, 0, 1));
+        float angle_i = VectorToAngle(radiusVector_i);
+        float dtheta = dt * radiusVector_i.magnitude * SPEED;
+        float angle_f = angle_i + dtheta;
+        Vector3 radiusVector_f = AngleToVector(angle_f);
+
+        transform.Translate(radiusVector_f + polePos - characterPos);
+    }
+
+    Vector3 AngleToVector(float a)
+    {
+        return new Vector3(Mathf.Cos(a), 0, Mathf.Sin(a));
+    }
+
+    float VectorToAngle(Vector3 v)
+    {
+        return Mathf.Atan2(v.z, v.x);
     }
 }

@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 5204367448648311205}
   m_Layer: 7
   m_Name: Pole
-  m_TagString: Untagged
+  m_TagString: SwingPole
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1396,7 +1396,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 1481
+  m_VersionIndex: 1484
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
