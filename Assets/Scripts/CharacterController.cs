@@ -10,7 +10,7 @@ public class CharacterController : MonoBehaviour
     const float TIME_SLOW_MULTIPLIER = 1f / 6f;
 
     const float SWING_RADIUS = 0.5f;
-    const float POLE_GRAB_DISTANCE = 0.55f;
+    const float POLE_GRAB_DISTANCE = 0.6f;
 
     event Action OnLeftMouseUp;
     event Action OnRightMouseUp;
@@ -53,18 +53,18 @@ public class CharacterController : MonoBehaviour
     void Update()
     {
         // mouse events
-        if (Input.GetMouseButtonUp(0))
+        if (Input.GetMouseButtonUp(0) || Input.GetKeyUp(KeyCode.Q))
         {
             OnLeftMouseUp();
         }
 
-        if (Input.GetMouseButtonUp(1))
+        if (Input.GetMouseButtonUp(1) || Input.GetKeyUp(KeyCode.W))
         {
             OnRightMouseUp();
         }
 
         // look for pole to grab
-        if (Input.GetMouseButton(1))
+        if (Input.GetMouseButton(1) || Input.GetKey(KeyCode.W))
         {
             if (NearPole(transform.position, out var pole))
             {
@@ -80,7 +80,7 @@ public class CharacterController : MonoBehaviour
 
     void SetTimeScale()
     {
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButton(0) || Input.GetKey(KeyCode.Q))
         {
             _timeScale = TIME_SLOW_MULTIPLIER;
         }
@@ -94,7 +94,8 @@ public class CharacterController : MonoBehaviour
     {
         if (_attachedToPole)
         {
-            RotateAround(transform.position, _poleAttachedTo.transform.position, 1, Time.deltaTime);
+            float rotationDirection = GetRotationDirection(_poleAttachedTo.transform.position, transform.position, _velocity);
+            RotateAround(transform.position, _poleAttachedTo.transform.position, rotationDirection, Time.deltaTime);
         } else if (VelocityHittingWall(_velocity))
         {
             Hault();
@@ -112,6 +113,16 @@ public class CharacterController : MonoBehaviour
         Vector3 zeroedDir = Vector3.Scale(mouseWorldPos - playerPos, Vector3.one - Vector3.up);
 
         return Vector3.Normalize(zeroedDir);
+    }
+
+    float GetRotationDirection(Vector3 centerOfCircle, Vector3 pointOnCircle, Vector3 velocity)
+    {
+        centerOfCircle = Vector3.Scale(centerOfCircle, Vector3.one - Vector3.up);
+        pointOnCircle = Vector3.Scale(pointOnCircle, Vector3.one - Vector3.up);
+
+        Vector3 radius = -pointOnCircle + centerOfCircle;
+
+        return Mathf.Sign(Vector3.Dot(Vector3.Cross(radius, velocity), Vector3.up));
     }
 
     Vector3 SnapToOrthogonal(Vector3 v3)
@@ -183,7 +194,7 @@ public class CharacterController : MonoBehaviour
     {
         Vector3 radiusVector_i = Vector3.Scale(Vector3.Normalize(characterPos - polePos), new Vector3(1, 0, 1));
         float angle_i = VectorToAngle(radiusVector_i);
-        float dtheta = dt * SWING_SPEED * rotationDirection / SWING_RADIUS * _timeScale;
+        float dtheta = dt * rotationDirection * _timeScale / SWING_RADIUS * SWING_SPEED;
         float angle_f = angle_i + dtheta;
         Vector3 radiusVector_f = AngleToVector(angle_f) * SWING_RADIUS;
 

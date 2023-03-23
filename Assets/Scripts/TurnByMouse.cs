@@ -30,7 +30,7 @@ namespace Assets.Scripts
         // Update is called once per frame
         void Update()
         {
-            if (Input.GetMouseButton(0))
+            if (Input.GetMouseButton(0) || Input.GetKey(KeyCode.Q))
             {
                 _realAngle = Mathf.Rad2Deg * GetAngleBetweenMouseAndCharacter();
                 _currentAngle = RoundTo90Deg(_realAngle);
