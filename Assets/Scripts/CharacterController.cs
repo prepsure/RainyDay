@@ -1,3 +1,4 @@
+using Assets.Scripts;
 using System;
 using UnityEngine;
 
@@ -53,18 +54,18 @@ public class CharacterController : MonoBehaviour
     void Update()
     {
         // mouse events
-        if (Input.GetMouseButtonUp(0) || Input.GetKeyUp(KeyCode.Q))
+        if (UmbrellaInput.GetUp(BrellaInputs.Aim))
         {
             OnLeftMouseUp();
         }
 
-        if (Input.GetMouseButtonUp(1) || Input.GetKeyUp(KeyCode.W))
+        if (UmbrellaInput.GetUp(BrellaInputs.Swing))
         {
             OnRightMouseUp();
         }
 
         // look for pole to grab
-        if (Input.GetMouseButton(1) || Input.GetKey(KeyCode.W))
+        if (UmbrellaInput.Get(BrellaInputs.Swing))
         {
             if (NearPole(transform.position, out var pole))
             {
@@ -80,7 +81,7 @@ public class CharacterController : MonoBehaviour
 
     void SetTimeScale()
     {
-        if (Input.GetMouseButton(0) || Input.GetKey(KeyCode.Q))
+        if (UmbrellaInput.Get(BrellaInputs.Aim))
         {
             _timeScale = TIME_SLOW_MULTIPLIER;
         }

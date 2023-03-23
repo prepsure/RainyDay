@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using Assets.Scripts;
+using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -15,12 +16,12 @@ public class CharacterAnimation : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonUp(0) || Input.GetKeyUp(KeyCode.Q))
+        if (UmbrellaInput.GetUp(BrellaInputs.Aim))
         {
             _animController.SetTrigger("Open");
         }
 
-        if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Q))
+        if (UmbrellaInput.GetDown(BrellaInputs.Aim))
         {
             _animController.SetTrigger("Close");
         }
