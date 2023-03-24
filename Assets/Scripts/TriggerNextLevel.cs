@@ -8,6 +8,8 @@ public class TriggerNextLevel : MonoBehaviour
 
     enum Level
     {
+        Title = 0,
+
         Begin = 1,
         Alleyway = 2,
         QuickTime = 3,
@@ -17,6 +19,23 @@ public class TriggerNextLevel : MonoBehaviour
         Loop = 6,
         Inward = 7,
         Distracted = 8,
+
+        ThankYou = 9,
+    }
+
+    private void Update()
+    {
+        // load level 1 when r is pressed
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            SceneManager.LoadSceneAsync(((Level)0).ToString(), LoadSceneMode.Single);
+        }
+
+        int levelNumber = (int)Enum.Parse(typeof(Level), SceneManager.GetActiveScene().name);
+        if (levelNumber == 0 && Input.GetMouseButtonUp(0))
+        {
+            LoadNextScene();
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -26,9 +45,13 @@ public class TriggerNextLevel : MonoBehaviour
             return;
         }
 
+        LoadNextScene();
+    }
+
+    private void LoadNextScene()
+    {
         int levelNumber = (int)Enum.Parse(typeof(Level), SceneManager.GetActiveScene().name);
 
-        Debug.Log((Level)(levelNumber + 1));
         string nextSceneName = ((Level)(levelNumber + 1)).ToString();
 
         SceneManager.LoadSceneAsync(nextSceneName, LoadSceneMode.Single);
