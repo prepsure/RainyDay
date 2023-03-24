@@ -16,6 +16,15 @@ public class CharacterAnimation : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (UmbrellaInput.GetDown(BrellaInputs.Swing))
+        {
+            _animController.SetTrigger("StartSwing");
+        }
+
+        if (UmbrellaInput.GetUp(BrellaInputs.Swing))
+        {
+            _animController.SetTrigger("StopSwing");
+        }
 
         if (UmbrellaInput.GetUp(BrellaInputs.Aim))
         {

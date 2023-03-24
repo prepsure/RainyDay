@@ -11,6 +11,7 @@ namespace Assets.Scripts
     {
         Aim,
         Swing,
+        None,
     }
 
     internal class UmbrellaInput

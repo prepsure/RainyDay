@@ -8,10 +8,10 @@ public class CharacterController : MonoBehaviour
     const float SWING_SPEED = 2 / 3f * SPEED;
 
     const int PUSH_OFF_MASK = 1 << 6;
-    const float TIME_SLOW_MULTIPLIER = 1f / 6f;
+    const float TIME_SLOW_MULTIPLIER = 1f / 8f;
 
-    const float SWING_RADIUS = 0.5f;
-    const float POLE_GRAB_DISTANCE = 0.6f;
+    const float SWING_RADIUS = 0.8f;
+    const float POLE_GRAB_DISTANCE = 0.9f;
 
     event Action OnLeftMouseUp;
     event Action OnRightMouseUp;
@@ -45,7 +45,7 @@ public class CharacterController : MonoBehaviour
 
             // snap position to a grid space
             // snap velocity to an orthogonal direction
-
+            SnapPositionToInt();
             _attachedToPole = false;
         };
     }
@@ -172,7 +172,7 @@ public class CharacterController : MonoBehaviour
         return new Vector3(Mathf.Round(v3.x), Mathf.Round(v3.y), Mathf.Round(v3.z));
     }
 
-    bool NearPole(Vector3 v3, out GameObject p)
+    public static bool NearPole(Vector3 v3, out GameObject p)
     {
         foreach (GameObject pole in GameObject.FindGameObjectsWithTag("SwingPole"))
         {
@@ -203,12 +203,12 @@ public class CharacterController : MonoBehaviour
         _velocity = SnapToOrthogonal(Vector3.Cross(radiusVector_f, Vector3.up * rotationDirection)) * SPEED;
     }
 
-    Vector3 AngleToVector(float a)
+    public static Vector3 AngleToVector(float a)
     {
         return new Vector3(Mathf.Cos(a), 0, Mathf.Sin(a));
     }
 
-    float VectorToAngle(Vector3 v)
+    public static float VectorToAngle(Vector3 v)
     {
         return Mathf.Atan2(v.z, v.x);
     }
