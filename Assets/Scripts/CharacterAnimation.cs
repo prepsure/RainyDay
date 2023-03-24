@@ -26,14 +26,15 @@ public class CharacterAnimation : MonoBehaviour
             _animController.SetTrigger("StopSwing");
         }
 
-        if (UmbrellaInput.GetUp(BrellaInputs.Aim))
-        {
-            _animController.SetTrigger("Open");
-        }
+
 
         if (UmbrellaInput.GetDown(BrellaInputs.Aim))
         {
             _animController.SetTrigger("Close");
+        }
+        else if (UmbrellaInput.GetUp(BrellaInputs.Aim))
+        {
+            _animController.SetTrigger("Open");
         }
     }
 

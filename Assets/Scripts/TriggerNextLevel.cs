@@ -8,15 +8,15 @@ public class TriggerNextLevel : MonoBehaviour
 
     enum Level
     {
-        Level1 = 1,
-        Level2 = 2,
-        Level3 = 3,
-        Level4 = 4,
+        Begin = 1,
+        Alleyway = 2,
+        QuickTime = 3,
+        Swing = 4,
 
-        Level5 = 5,
-        Level6 = 6,
-        Level7 = 7,
-        Level8 = 8,
+        Bounce = 5,
+        Loop = 6,
+        Inward = 7,
+        Distracted = 8,
     }
 
     private void OnTriggerEnter(Collider other)
@@ -28,6 +28,7 @@ public class TriggerNextLevel : MonoBehaviour
 
         int levelNumber = (int)Enum.Parse(typeof(Level), SceneManager.GetActiveScene().name);
 
+        Debug.Log((Level)(levelNumber + 1));
         string nextSceneName = ((Level)(levelNumber + 1)).ToString();
 
         SceneManager.LoadSceneAsync(nextSceneName, LoadSceneMode.Single);
