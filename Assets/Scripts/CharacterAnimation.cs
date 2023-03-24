@@ -16,6 +16,7 @@ public class CharacterAnimation : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         if (UmbrellaInput.GetUp(BrellaInputs.Aim))
         {
             _animController.SetTrigger("Open");
