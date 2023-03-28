@@ -17,8 +17,8 @@ public class TriggerNextLevel : MonoBehaviour
 
         Bounce = 5,
         Loop = 6,
-        Inward = 7,
-        Distracted = 8,
+        Distracted = 7,
+        Inward = 8,
 
         ThankYou = 9,
     }

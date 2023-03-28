@@ -18,6 +18,8 @@ public class CharacterController : MonoBehaviour
 
     Camera _camera;
     GameObject _poleAttachedTo;
+
+    public float RotationDirection = 0;
     
     Vector3 _velocity = Vector3.zero;
     bool _attachedToPole = false;
@@ -75,6 +77,13 @@ public class CharacterController : MonoBehaviour
             }
         }
 
+        RotationDirection = 0;
+
+        if (_attachedToPole)
+        {
+            RotationDirection = GetRotationDirection(_poleAttachedTo.transform.position, transform.position, _velocity);
+        }
+
         SetTimeScale();
         UpdateVelocity();
     }
@@ -95,9 +104,9 @@ public class CharacterController : MonoBehaviour
     {
         if (_attachedToPole)
         {
-            float rotationDirection = GetRotationDirection(_poleAttachedTo.transform.position, transform.position, _velocity);
-            RotateAround(transform.position, _poleAttachedTo.transform.position, rotationDirection, Time.deltaTime);
-        } else if (VelocityHittingWall(_velocity))
+            RotateAround(transform.position, _poleAttachedTo.transform.position, RotationDirection, Time.deltaTime);
+        } 
+        else if (VelocityHittingWall(_velocity))
         {
             Hault();
         }
@@ -116,7 +125,7 @@ public class CharacterController : MonoBehaviour
         return Vector3.Normalize(zeroedDir);
     }
 
-    float GetRotationDirection(Vector3 centerOfCircle, Vector3 pointOnCircle, Vector3 velocity)
+    static float GetRotationDirection(Vector3 centerOfCircle, Vector3 pointOnCircle, Vector3 velocity)
     {
         centerOfCircle = Vector3.Scale(centerOfCircle, Vector3.one - Vector3.up);
         pointOnCircle = Vector3.Scale(pointOnCircle, Vector3.one - Vector3.up);
